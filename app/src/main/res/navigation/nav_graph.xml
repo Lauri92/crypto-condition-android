@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainMenuFragment">
+
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="fi.lauriari.crypto_condition_android.fragments.MainMenuFragment"
+        android:label="fragment_main_menu"
+        tools:layout="@layout/fragment_main_menu" >
+        <action
+            android:id="@+id/action_mainMenuFragment_to_bearishTrendFragment"
+            app:destination="@id/bearishTrendFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_tradingVolumeFragment"
+            app:destination="@id/tradingVolumeFragment" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_timeMachineFragment"
+            app:destination="@id/timeMachineFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bearishTrendFragment"
+        android:name="fi.lauriari.crypto_condition_android.fragments.BearishTrendFragment"
+        android:label="fragment_bearish_trend"
+        tools:layout="@layout/fragment_bearish_trend" />
+    <fragment
+        android:id="@+id/tradingVolumeFragment"
+        android:name="fi.lauriari.crypto_condition_android.fragments.TradingVolumeFragment"
+        android:label="fragment_trading_volume"
+        tools:layout="@layout/fragment_trading_volume" />
+    <fragment
+        android:id="@+id/timeMachineFragment"
+        android:name="fi.lauriari.crypto_condition_android.fragments.TimeMachineFragment"
+        android:label="fragment_time_machine"
+        tools:layout="@layout/fragment_time_machine" />
+</navigation>
