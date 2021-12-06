@@ -10,17 +10,32 @@
         android:padding="16dp">
 
 
-        <Button
-            android:id="@+id/select_date_btn"
+        <TextView
+            android:id="@+id/select_start_date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="212dp"
-            android:text="Select date"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="128dp"
+            android:text="@string/set_start_date"
             android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            android:textSize="25sp"
+            app:drawableLeftCompat="@drawable/ic_baseline_edit_calendar_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/select_end_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/set_end_date"
+            android:textAllCaps="false"
+            android:textSize="25sp"
+            app:drawableLeftCompat="@drawable/ic_baseline_edit_calendar_24"
+            app:layout_constraintEnd_toEndOf="@+id/select_start_date_tv"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/select_start_date_tv"
+            app:layout_constraintTop_toBottomOf="@+id/select_start_date_tv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

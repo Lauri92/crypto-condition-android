@@ -2,4 +2,8 @@
     <string name="app_name">crypto-condition-android</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_startdate">Select startdate</string>
+    <string name="set_start_date">Set start date</string>
+    <string name="set_tv_text">%s/%s/%s</string>
+    <string name="set_end_date">Set end date</string>
 </resources>

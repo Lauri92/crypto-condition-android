@@ -2,6 +2,7 @@ package fi.lauriari.crypto_condition_android.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +11,20 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import fi.lauriari.crypto_condition_android.databinding.FragmentMainMenuBinding
 import fi.lauriari.crypto_condition_android.R
 import fi.lauriari.crypto_condition_android.viewmodels.CryptoConditionViewModel
 import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: FragmentMainMenuBinding
+    private var setStartdate = false
+    private var setEnddate = false
+    private var startDate: String? = null
+    private var endDate: String? = null
 
     private val cryptoConditionViewModel: CryptoConditionViewModel by viewModels()
 
@@ -27,8 +33,15 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_menu, container, false)
 
-        binding.selectDateBtn.setOnClickListener {
+        initClickListeners()
 
+        return binding.root
+    }
+
+    private fun initClickListeners() {
+        binding.selectStartDateTv.setOnClickListener {
+            setStartdate = true
+            setEnddate = false
             DatePickerDialog(
                 requireContext(),
                 R.style.SpinnerDatePickerStyle,
@@ -40,15 +53,48 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 dateSpinner.datePicker.maxDate = Calendar.getInstance().timeInMillis
                 dateSpinner.setTitle("Select start date")
             }.show()
-
         }
 
-        return binding.root
+        binding.selectEndDateTv.setOnClickListener {
+            setStartdate = false
+            setEnddate = true
+            DatePickerDialog(
+                requireContext(),
+                R.style.SpinnerDatePickerStyle,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH) + 1,
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+            ).also { dateSpinner ->
+                dateSpinner.datePicker.maxDate = Calendar.getInstance().timeInMillis
+                dateSpinner.setTitle("Select end date")
+            }.show()
+        }
     }
+
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
-        Toast.makeText(requireContext(), "$dayOfMonth ${month + 1} $year", Toast.LENGTH_SHORT)
-            .show()
+        val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+
+        if (setStartdate) {
+            binding.selectStartDateTv.text = getString(
+                R.string.set_tv_text,
+                dayOfMonth.toString(),
+                (month + 1).toString(),
+                year.toString()
+            )
+            val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
+            startDate = calendarTime?.time.toString()
+
+        } else {
+            binding.selectEndDateTv.text = getString(
+                R.string.set_tv_text, dayOfMonth.toString(),
+                (month + 1).toString(),
+                year.toString()
+            )
+            val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
+            endDate = calendarTime?.time.toString()
+        }
     }
 }
