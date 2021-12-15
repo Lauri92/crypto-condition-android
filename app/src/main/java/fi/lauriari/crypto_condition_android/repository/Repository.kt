@@ -1,15 +1,17 @@
 package fi.lauriari.crypto_condition_android.repository
 
+import android.util.Log
 import fi.lauriari.crypto_condition_android.api.RetrofitInstance
-import fi.lauriari.crypto_condition_android.models.BearishTrendInfo
+import fi.lauriari.crypto_condition_android.models.CryptoCondition
 import retrofit2.Response
 
 class Repository {
 
-    suspend fun getBearishTrendInfo(
-        startdate: String,
-        enddate: String
-    ): Response<BearishTrendInfo> {
-        return RetrofitInstance.api.getBearishTrendInfo(startdate, enddate)
+    suspend fun getCryptoCondition(
+        startdate: Long,
+        enddate: Long
+    ): Response<CryptoCondition> {
+        Log.d("cryptocondition", "in repo")
+        return RetrofitInstance.api.getCryptoCondition(startdate, enddate)
     }
 }

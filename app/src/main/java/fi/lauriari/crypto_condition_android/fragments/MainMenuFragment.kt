@@ -23,8 +23,8 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var binding: FragmentMainMenuBinding
     private var setStartdate = false
     private var setEnddate = false
-    private var startDate: String? = null
-    private var endDate: String? = null
+    private var startDate: Long? = null
+    private var endDate: Long? = null
 
     private val cryptoConditionViewModel: CryptoConditionViewModel by viewModels()
 
@@ -34,8 +34,21 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_menu, container, false)
 
         initClickListeners()
+        setObserver()
 
         return binding.root
+    }
+
+    private fun setObserver() {
+        cryptoConditionViewModel.cryptoConditionInfo.observe(viewLifecycleOwner, { response ->
+            if (response.isSuccessful) {
+                val message = response.body()
+                Log.d("cryptocondition", message.toString())
+                binding.textView.text = response.body().toString()
+            } else {
+                Toast.makeText(activity, response.code(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initClickListeners() {
@@ -70,6 +83,13 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 dateSpinner.setTitle("Select end date")
             }.show()
         }
+
+        binding.getDataBtn.setOnClickListener {
+            if (startDate != null && endDate != null) {
+                Toast.makeText(requireContext(), "$startDate $endDate", Toast.LENGTH_SHORT).show()
+                cryptoConditionViewModel.getCryptoCondition(startDate!!, endDate!!)
+            }
+        }
     }
 
 
@@ -85,7 +105,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 year.toString()
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
-            startDate = calendarTime?.time.toString()
+            startDate = calendarTime?.time!! / 1000
 
         } else {
             binding.selectEndDateTv.text = getString(
@@ -94,7 +114,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 year.toString()
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
-            endDate = calendarTime?.time.toString()
+            endDate = calendarTime?.time!! / 1000
         }
     }
 }

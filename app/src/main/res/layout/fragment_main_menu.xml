@@ -37,6 +37,27 @@
             app:layout_constraintStart_toStartOf="@+id/select_start_date_tv"
             app:layout_constraintTop_toBottomOf="@+id/select_start_date_tv" />
 
+        <Button
+            android:id="@+id/get_data_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="@string/get_crypto_condition"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_end_date_tv" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="56dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/get_data_btn" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
