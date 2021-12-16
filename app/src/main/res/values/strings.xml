@@ -8,5 +8,7 @@
     <string name="set_tv_text">%s/%s/%s</string>
     <string name="apply_button">Apply</string>
     <string name="select_date">Select Date</string>
+    <string name="trading_volume_date_string">The highest trading volume was recorded on %s</string>
+    <string name="trading_volume_volume_string">%s B €</string>
     <string name="dash">-</string>
 </resources>

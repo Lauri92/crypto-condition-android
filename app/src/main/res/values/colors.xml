@@ -8,6 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="buttonblue">#3B61CC</color>
+    <color name="infoblue">#6F8DE0</color>
     <color name="dividerred">#FF3D00</color>
     <color name="backgroundorange">#FF9100</color>
+    <color name="darkerorange">#FF6600</color>
+    <color name="tradingvolumegold">#FFC400</color>
 </resources>

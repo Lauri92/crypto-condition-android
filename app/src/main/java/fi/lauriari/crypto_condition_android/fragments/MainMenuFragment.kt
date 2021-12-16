@@ -43,8 +43,15 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         cryptoConditionViewModel.cryptoConditionInfo.observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
                 val message = response.body()
+                message ?: return@observe
                 Log.d("cryptocondition", message.toString())
-                binding.textView.text = response.body().toString()
+                val tradingVolume: Int =
+                    (message.highestVolume.volume / 1_000_000_000).toInt()
+                val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
+                binding.tradingVolumeVolume.text =
+                    getString(R.string.trading_volume_volume_string, tradingVolume.toString())
+                binding.tradingVolumeDate.text =
+                    getString(R.string.trading_volume_date_string, tradingVolumeDate)
             } else {
                 Toast.makeText(activity, response.code(), Toast.LENGTH_SHORT).show()
             }
@@ -92,6 +99,12 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun convertMillisToDate(milliseconds: Long): String {
+        val formatter = SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliseconds
+        return formatter.format(calendar.time)
+    }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
