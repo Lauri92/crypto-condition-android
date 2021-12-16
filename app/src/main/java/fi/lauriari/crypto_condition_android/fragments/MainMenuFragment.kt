@@ -47,13 +47,22 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 Log.d("cryptocondition", message.toString())
                 val tradingVolume: Int =
                     (message.highestVolume.volume / 1_000_000_000).toInt()
-                val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
+                val tradingVolumeDate =
+                    convertMillisToDate(milliseconds = message.highestVolume.date)
+                val bearishTrendLength = message.bearishTrend.length.toString()
+                val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
+                val bearishTrendEnd = convertMillisToDate(message.bearishTrend.endDate)
                 binding.tradingVolumeVolume.text =
                     getString(R.string.trading_volume_volume_string, tradingVolume.toString())
                 binding.tradingVolumeDate.text =
                     getString(R.string.trading_volume_date_string, tradingVolumeDate)
+                binding.bearishTrendLengthTv.text = bearishTrendLength
+                binding.bearishTrendDaysText.visibility = View.VISIBLE
+                binding.bearishTrendTextTv.visibility = View.GONE
+                binding.bearishTrendDate.text =
+                    getString(R.string.bearish_trend_dates_string, bearishTrendStart, bearishTrendEnd)
             } else {
-                Toast.makeText(activity, response.code(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), response.code(), Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -100,7 +109,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun convertMillisToDate(milliseconds: Long): String {
-        val formatter = SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = milliseconds
         return formatter.format(calendar.time)

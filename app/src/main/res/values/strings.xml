@@ -9,6 +9,11 @@
     <string name="apply_button">Apply</string>
     <string name="select_date">Select Date</string>
     <string name="trading_volume_date_string">The highest trading volume was recorded on %s</string>
-    <string name="trading_volume_volume_string">%s B €</string>
+    <string name="trading_volume_volume_string">%sB €</string>
     <string name="dash">-</string>
+    <string name="trading_volume">Trading volume</string>
+    <string name="date">Date</string>
+    <string name="bearish_trend">Bearish trend</string>
+    <string name="days">DAYS</string>
+    <string name="bearish_trend_dates_string">The trend was bearish %s - %s</string>
 </resources>
