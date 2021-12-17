@@ -128,8 +128,17 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.getDataBtn.setOnClickListener {
             if (startDate != null && endDate != null) {
-                Toast.makeText(requireContext(), "$startDate $endDate", Toast.LENGTH_SHORT).show()
-                cryptoConditionViewModel.getCryptoCondition(startDate!!, endDate!!)
+                if (endDate!! > startDate!!) {
+                    cryptoConditionViewModel.getCryptoCondition(startDate!!, endDate!!)
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Check dates startdate can't be larger than enddate!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Toast.makeText(requireContext(), "Check dates!", Toast.LENGTH_SHORT).show()
             }
         }
     }
