@@ -13,4 +13,5 @@
     <color name="backgroundorange">#FF9100</color>
     <color name="darkerorange">#FF6600</color>
     <color name="tradingvolumegold">#FFC400</color>
+    <color name="circleborder">#775C02</color>
 </resources>

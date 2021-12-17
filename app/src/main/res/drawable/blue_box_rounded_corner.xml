@@ -3,6 +3,10 @@
 
     <solid android:color="@color/infoblue" />
 
+    <stroke
+        android:width="2dp"
+        android:color="@color/black" />
+
     <padding
         android:left="1dp"
         android:right="1dp"
