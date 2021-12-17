@@ -7,12 +7,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bitcoinb">
+        android:background="@drawable/bitcoinscrooge">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="160dp"
             android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -121,13 +121,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="200dp"
-                android:layout_height="304dp"
+                android:layout_height="240dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="170dp"
-                    android:layout_height="150dp"
+                    android:layout_width="150dp"
+                    android:layout_height="125dp"
                     android:layout_below="@id/trading_volume_iv"
                     android:layout_marginTop="88dp"
                     android:background="@drawable/blue_box_rounded_corner"
@@ -142,7 +142,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/trading_volume"
-                        android:textColor="@color/tradingvolumegold"
+                        android:textColor="@color/black"
                         android:textSize="25sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -179,13 +179,13 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="200dp"
-                android:layout_height="304dp"
+                android:layout_height="240dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="170dp"
-                    android:layout_height="150dp"
+                    android:layout_width="150dp"
+                    android:layout_height="125dp"
                     android:layout_marginTop="88dp"
                     android:background="@drawable/blue_box_rounded_corner"
                     android:padding="3dp"
@@ -258,10 +258,154 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-                app:layout_constraintStart_toStartOf="@+id/constraintLayout2">
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/has_best_dates_cl"
+                    android:layout_width="350dp"
+                    android:layout_height="175dp"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/blue_box_rounded_corner"
+                    app:layout_constraintEnd_toEndOf="@+id/best_dates_iv"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintStart_toStartOf="@+id/best_dates_iv"
+                    app:layout_constraintTop_toTopOf="@+id/best_dates_iv">
+
+                    <TextView
+                        android:id="@+id/buy_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/buy"
+                        android:textColor="@color/green"
+                        android:textSize="35sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/buy_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/buy_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/buy_tv"
+                        tools:text="11.12.2021" />
+
+                    <TextView
+                        android:id="@+id/buy_price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:textColor="@color/circleborder"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/buy_date_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/buy_date_tv"
+                        tools:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/sell_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/sell"
+                        android:textColor="@color/green"
+                        android:textSize="35sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buy_tv" />
+
+                    <TextView
+                        android:id="@+id/sell_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/sell_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/sell_tv"
+                        tools:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/sell_price_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:textColor="@color/circleborder"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/sell_date_tv"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/sell_date_tv"
+                        tools:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/red_box_placeholder_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/best_buy_and_sell_dates_will_appear_here"
+                        android:textColor="@color/sellbuygrey"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/has_no_best_dates_cl"
+                    android:layout_width="350dp"
+                    android:layout_height="175dp"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/blue_box_rounded_corner"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/best_dates_iv"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintStart_toStartOf="@+id/best_dates_iv"
+                    app:layout_constraintTop_toTopOf="@+id/best_dates_iv">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="40sp"
+                        android:text="@string/buy_n_sell" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/best_dates_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/circle"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_thumb_up_alt_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/best_dates_not_available_iv"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/circle"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_thumb_down_alt_24"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

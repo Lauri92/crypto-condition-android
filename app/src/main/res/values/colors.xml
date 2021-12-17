@@ -7,11 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="sellbuygrey">#C5C3C3</color>
     <color name="buttonblue">#3B61CC</color>
-    <color name="infoblue">#6F8DE0</color>
+    <color name="infoblue">#E3E6F0</color>
     <color name="dividerred">#FF3D00</color>
     <color name="backgroundorange">#FF9100</color>
     <color name="darkerorange">#FF6600</color>
     <color name="tradingvolumegold">#FFC400</color>
-    <color name="circleborder">#775C02</color>
+    <color name="circleyellow">#FFFF99</color>
+    <color name="circleborder">#A57C00</color>
+    <color name="green">#1B642B</color>
 </resources>

@@ -52,6 +52,9 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 val bearishTrendLength = message.bearishTrend.length.toString()
                 val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
                 val bearishTrendEnd = convertMillisToDate(message.bearishTrend.endDate)
+                binding.redBoxPlaceholderTv.visibility = View.GONE
+                binding.sellTv.visibility = View.VISIBLE
+                binding.buyTv.visibility = View.VISIBLE
                 binding.tradingVolumeVolume.text =
                     getString(R.string.trading_volume_volume_string, tradingVolume.toString())
                 binding.tradingVolumeDate.text =
@@ -60,7 +63,30 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 binding.bearishTrendDaysText.visibility = View.VISIBLE
                 binding.bearishTrendTextTv.visibility = View.GONE
                 binding.bearishTrendDate.text =
-                    getString(R.string.bearish_trend_dates_string, bearishTrendStart, bearishTrendEnd)
+                    getString(
+                        R.string.bearish_trend_dates_string,
+                        bearishTrendStart,
+                        bearishTrendEnd
+                    )
+                if (message.timeMachine.bestDayToBuy.date != null) {
+                    binding.hasBestDatesCl.visibility = View.VISIBLE
+                    binding.hasNoBestDatesCl.visibility = View.GONE
+                    binding.bestDatesIv.visibility = View.VISIBLE
+                    binding.bestDatesNotAvailableIv.visibility = View.GONE
+                    val buyDate = convertMillisToDate(message.timeMachine.bestDayToBuy.date)
+                    val buyPrice = message.timeMachine.bestDayToBuy.price?.toInt().toString()
+                    val sellDate = convertMillisToDate(message.timeMachine.bestDayToSell.date!!)
+                    val sellPrice = message.timeMachine.bestDayToSell.price?.toInt().toString()
+                    binding.buyDateTv.text = buyDate
+                    binding.buyPriceTv.text = getString(R.string.buysell_price, buyPrice)
+                    binding.sellDateTv.text = sellDate
+                    binding.sellPriceTv.text = getString(R.string.buysell_price, sellPrice)
+                } else {
+                    binding.hasBestDatesCl.visibility = View.GONE
+                    binding.hasNoBestDatesCl.visibility = View.VISIBLE
+                    binding.bestDatesIv.visibility = View.GONE
+                    binding.bestDatesNotAvailableIv.visibility = View.VISIBLE
+                }
             } else {
                 Toast.makeText(requireContext(), response.code(), Toast.LENGTH_SHORT).show()
             }
