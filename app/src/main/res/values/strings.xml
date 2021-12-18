@@ -10,6 +10,7 @@
     <string name="select_date">Select Date</string>
     <string name="trading_volume_date_string">The highest trading volume was recorded on %s</string>
     <string name="trading_volume_volume_string">%sB €</string>
+    <string name="trading_volume_millions_volume_string">%sM €</string>
     <string name="dash">-</string>
     <string name="trading_volume">Trading volume</string>
     <string name="date">Date</string>
@@ -23,4 +24,5 @@
     <string name="buy_n_sell">Do not buy or sell</string>
     <string name="Date_picker_alert">Check dates startdate can\'t be larger than enddate!</string>
     <string name="check_dates">Check dates!</string>
+    <string name="volume_not_available">Volume not available</string>
 </resources>

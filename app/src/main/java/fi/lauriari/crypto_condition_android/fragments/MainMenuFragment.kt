@@ -14,6 +14,8 @@ import androidx.fragment.app.viewModels
 import fi.lauriari.crypto_condition_android.databinding.FragmentMainMenuBinding
 import fi.lauriari.crypto_condition_android.R
 import fi.lauriari.crypto_condition_android.viewmodels.CryptoConditionViewModel
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -58,8 +60,17 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 val message = response.body()
                 message ?: return@observe
                 Log.d("cryptocondition", message.toString())
-                val tradingVolume: Int =
-                    (message.highestVolume.volume / 1_000_000_000).toInt()
+
+                val tradingVolumeBillions: BigDecimal =
+                    BigDecimal(message.highestVolume.volume / 1_000_000_000).setScale(
+                        3,
+                        RoundingMode.HALF_EVEN
+                    )
+                val tradingVolumeMillions: BigDecimal =
+                    BigDecimal(message.highestVolume.volume / 1_000_000).setScale(
+                        3, RoundingMode.HALF_EVEN
+                    )
+
                 val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
                 val bearishTrendLength = message.bearishTrend.length.toString()
                 val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
@@ -67,8 +78,25 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 binding.redBoxPlaceholderTv.visibility = View.GONE
                 binding.sellTv.visibility = View.VISIBLE
                 binding.buyTv.visibility = View.VISIBLE
-                binding.tradingVolumeVolume.text =
-                    getString(R.string.trading_volume_volume_string, tradingVolume.toString())
+
+                when {
+                    message.highestVolume.volume == 0.0 -> {
+                        binding.tradingVolumeVolume.text = getString(R.string.volume_not_available)
+                    }
+                    message.highestVolume.volume > 1_000_000_000 -> {
+                        binding.tradingVolumeVolume.text =
+                            getString(
+                                R.string.trading_volume_volume_string,
+                                tradingVolumeBillions.toString()
+                            )
+                    }
+                    else -> {
+                        binding.tradingVolumeVolume.text = getString(
+                            R.string.trading_volume_volume_string,
+                            tradingVolumeMillions.toString()
+                        )
+                    }
+                }
                 binding.tradingVolumeDate.text =
                     getString(R.string.trading_volume_date_string, tradingVolumeDate)
                 binding.bearishTrendLengthTv.text = bearishTrendLength
