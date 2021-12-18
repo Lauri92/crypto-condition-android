@@ -22,4 +22,5 @@
     <string name="buy">BUY</string>
     <string name="buy_n_sell">Do not buy or sell</string>
     <string name="Date_picker_alert">Check dates startdate can\'t be larger than enddate!</string>
+    <string name="check_dates">Check dates!</string>
 </resources>

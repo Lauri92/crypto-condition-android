@@ -21,10 +21,13 @@ import java.util.Locale
 class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var binding: FragmentMainMenuBinding
+    private lateinit var datePickerDialog: DatePickerDialog
     private var setStartdate = false
     private var setEnddate = false
-    private var startDate: Long? = null
-    private var endDate: Long? = null
+    private var startDateSeconds: Long? = null
+    private var endDateSeconds: Long? = null
+    private var savedStartDate: Triple<Int, Int, Int>? = null
+    private var savedEndDate: Triple<Int, Int, Int>? = null
 
     private val cryptoConditionViewModel: CryptoConditionViewModel by viewModels()
 
@@ -32,6 +35,15 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_menu, container, false)
+
+        datePickerDialog = DatePickerDialog(
+            requireContext(),
+            R.style.SpinnerDatePickerStyle,
+            this,
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH) + 1,
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
+        )
 
         initClickListeners()
         setObserver()
@@ -42,6 +54,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun setObserver() {
         cryptoConditionViewModel.cryptoConditionInfo.observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
+                binding.progressBar.visibility = View.GONE
                 val message = response.body()
                 message ?: return@observe
                 Log.d("cryptocondition", message.toString())
@@ -96,47 +109,57 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.selectStartDateTv.setOnClickListener {
             setStartdate = true
             setEnddate = false
-            DatePickerDialog(
-                requireContext(),
-                R.style.SpinnerDatePickerStyle,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH) + 1,
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
-            ).also { dateSpinner ->
-                dateSpinner.datePicker.maxDate = Calendar.getInstance().timeInMillis
-                dateSpinner.setTitle("Select start date")
-            }.show()
+
+            if (savedStartDate != null) {
+                datePickerDialog.updateDate(
+                    savedStartDate!!.first,
+                    savedStartDate!!.second,
+                    savedStartDate!!.third
+                )
+            }
+
+            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            datePickerDialog.setTitle("Select start date")
+            datePickerDialog.show()
         }
 
         binding.selectEndDateTv.setOnClickListener {
             setStartdate = false
             setEnddate = true
-            DatePickerDialog(
-                requireContext(),
-                R.style.SpinnerDatePickerStyle,
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH) + 1,
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
-            ).also { dateSpinner ->
-                dateSpinner.datePicker.maxDate = Calendar.getInstance().timeInMillis
-                dateSpinner.setTitle("Select end date")
-            }.show()
+
+            if (savedEndDate != null) {
+                datePickerDialog.updateDate(
+                    savedEndDate!!.first,
+                    savedEndDate!!.second,
+                    savedEndDate!!.third
+                )
+            }
+
+            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            datePickerDialog.setTitle("Select end date")
+            datePickerDialog.show()
         }
 
         binding.getDataBtn.setOnClickListener {
-            if (startDate != null && endDate != null) {
-                if (endDate!! > startDate!!) {
-                    Log.d("dates", "start: $startDate end: $endDate")
-                    cryptoConditionViewModel.getCryptoCondition(startDate!!, endDate!!)
+            if (startDateSeconds != null && endDateSeconds != null) {
+                if (endDateSeconds!! > startDateSeconds!!) {
+                    Log.d("dates", "start: $startDateSeconds end: $endDateSeconds")
+                    cryptoConditionViewModel.getCryptoCondition(
+                        startDateSeconds!!,
+                        endDateSeconds!!
+                    )
+                    binding.progressBar.visibility = View.VISIBLE
                 } else {
                     Toast.makeText(
                         requireContext(), getString(R.string.Date_picker_alert), Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
-                Toast.makeText(requireContext(), "Check dates!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.check_dates),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -162,9 +185,9 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 year.toString()
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
-            startDate = calendarTime?.time!! / 1000
+            startDateSeconds = calendarTime?.time!! / 1000
 
-
+            savedStartDate = Triple(year, month, dayOfMonth)
 
         } else {
             binding.selectEndDateTv.text = getString(
@@ -173,7 +196,10 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 year.toString()
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
-            endDate = calendarTime?.time!! / 1000
+            endDateSeconds = calendarTime?.time!! / 1000
+
+            savedEndDate = Triple(year, month, dayOfMonth)
+
         }
     }
 }
