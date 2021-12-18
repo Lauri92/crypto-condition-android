@@ -47,8 +47,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 Log.d("cryptocondition", message.toString())
                 val tradingVolume: Int =
                     (message.highestVolume.volume / 1_000_000_000).toInt()
-                val tradingVolumeDate =
-                    convertMillisToDate(milliseconds = message.highestVolume.date)
+                val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
                 val bearishTrendLength = message.bearishTrend.length.toString()
                 val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
                 val bearishTrendEnd = convertMillisToDate(message.bearishTrend.endDate)
@@ -129,12 +128,11 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.getDataBtn.setOnClickListener {
             if (startDate != null && endDate != null) {
                 if (endDate!! > startDate!!) {
+                    Log.d("dates", "start: $startDate end: $endDate")
                     cryptoConditionViewModel.getCryptoCondition(startDate!!, endDate!!)
                 } else {
                     Toast.makeText(
-                        requireContext(),
-                        "Check dates startdate can't be larger than enddate!",
-                        Toast.LENGTH_SHORT
+                        requireContext(), getString(R.string.Date_picker_alert), Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
@@ -152,7 +150,9 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
-        val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd MM yyyy", Locale.getDefault()).also {
+            it.timeZone = TimeZone.getTimeZone("UTC")
+        }
 
         if (setStartdate) {
             binding.selectStartDateTv.text = getString(
@@ -163,6 +163,8 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
             startDate = calendarTime?.time!! / 1000
+
+
 
         } else {
             binding.selectEndDateTv.text = getString(

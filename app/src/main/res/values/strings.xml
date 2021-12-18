@@ -21,4 +21,5 @@
     <string name="best_buy_and_sell_dates_will_appear_here">Best dates to sell or buy</string>
     <string name="buy">BUY</string>
     <string name="buy_n_sell">Do not buy or sell</string>
+    <string name="Date_picker_alert">Check dates startdate can\'t be larger than enddate!</string>
 </resources>
