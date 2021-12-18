@@ -45,7 +45,10 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             Calendar.getInstance().get(Calendar.YEAR),
             Calendar.getInstance().get(Calendar.MONTH) + 1,
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH),
-        )
+        ).also {
+            it.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            it.datePicker.minDate = 1367107200000
+        }
 
         initClickListeners()
         setObserver()
@@ -82,6 +85,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 when {
                     message.highestVolume.volume == 0.0 -> {
                         binding.tradingVolumeVolume.text = getString(R.string.volume_not_available)
+                        binding.tradingVolumeDate.text = ""
                     }
                     message.highestVolume.volume > 1_000_000_000 -> {
                         binding.tradingVolumeVolume.text =
@@ -89,16 +93,19 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                                 R.string.trading_volume_volume_string,
                                 tradingVolumeBillions.toString()
                             )
+                        binding.tradingVolumeDate.text =
+                            getString(R.string.trading_volume_date_string, tradingVolumeDate)
                     }
                     else -> {
                         binding.tradingVolumeVolume.text = getString(
-                            R.string.trading_volume_volume_string,
+                            R.string.trading_volume_millions_volume_string,
                             tradingVolumeMillions.toString()
                         )
+                        binding.tradingVolumeDate.text =
+                            getString(R.string.trading_volume_date_string, tradingVolumeDate)
                     }
                 }
-                binding.tradingVolumeDate.text =
-                    getString(R.string.trading_volume_date_string, tradingVolumeDate)
+
                 binding.bearishTrendLengthTv.text = bearishTrendLength
                 binding.bearishTrendDaysText.visibility = View.VISIBLE
                 binding.bearishTrendTextTv.visibility = View.GONE
@@ -146,7 +153,6 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 )
             }
 
-            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePickerDialog.setTitle("Select start date")
             datePickerDialog.show()
         }
@@ -163,7 +169,6 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 )
             }
 
-            datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePickerDialog.setTitle("Select end date")
             datePickerDialog.show()
         }
