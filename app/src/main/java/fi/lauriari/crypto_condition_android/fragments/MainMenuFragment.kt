@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import fi.lauriari.crypto_condition_android.databinding.FragmentMainMenuBinding
 import fi.lauriari.crypto_condition_android.R
+import fi.lauriari.crypto_condition_android.models.CryptoCondition
 import fi.lauriari.crypto_condition_android.viewmodels.CryptoConditionViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -65,76 +66,12 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 message ?: return@observe
                 Log.d("cryptocondition", message.toString())
 
-                val tradingVolumeBillions: BigDecimal =
-                    BigDecimal(message.highestVolume.volume / 1_000_000_000).setScale(
-                        3,
-                        RoundingMode.HALF_EVEN
-                    )
-                val tradingVolumeMillions: BigDecimal =
-                    BigDecimal(message.highestVolume.volume / 1_000_000).setScale(
-                        3, RoundingMode.HALF_EVEN
-                    )
+                setTradingVolume(message)
 
-                val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
-                val bearishTrendLength = message.bearishTrend.length.toString()
-                val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
-                val bearishTrendEnd = convertMillisToDate(message.bearishTrend.endDate)
-                binding.redBoxPlaceholderTv.visibility = View.GONE
-                binding.sellTv.visibility = View.VISIBLE
-                binding.buyTv.visibility = View.VISIBLE
+                setBearishTrend(message)
 
-                when {
-                    message.highestVolume.volume == 0.0 -> {
-                        binding.tradingVolumeVolume.text = getString(R.string.volume_not_available)
-                        binding.tradingVolumeDate.text = ""
-                    }
-                    message.highestVolume.volume > 1_000_000_000 -> {
-                        binding.tradingVolumeVolume.text =
-                            getString(
-                                R.string.trading_volume_volume_string,
-                                tradingVolumeBillions.toString()
-                            )
-                        binding.tradingVolumeDate.text =
-                            getString(R.string.trading_volume_date_string, tradingVolumeDate)
-                    }
-                    else -> {
-                        binding.tradingVolumeVolume.text = getString(
-                            R.string.trading_volume_millions_volume_string,
-                            tradingVolumeMillions.toString()
-                        )
-                        binding.tradingVolumeDate.text =
-                            getString(R.string.trading_volume_date_string, tradingVolumeDate)
-                    }
-                }
+                setTimeMachine(message)
 
-                binding.bearishTrendLengthTv.text = bearishTrendLength
-                binding.bearishTrendDaysText.visibility = View.VISIBLE
-                binding.bearishTrendTextTv.visibility = View.GONE
-                binding.bearishTrendDate.text =
-                    getString(
-                        R.string.bearish_trend_dates_string,
-                        bearishTrendStart,
-                        bearishTrendEnd
-                    )
-                if (message.timeMachine.bestDayToBuy.date != null) {
-                    binding.hasBestDatesCl.visibility = View.VISIBLE
-                    binding.hasNoBestDatesCl.visibility = View.GONE
-                    binding.bestDatesIv.visibility = View.VISIBLE
-                    binding.bestDatesNotAvailableIv.visibility = View.GONE
-                    val buyDate = convertMillisToDate(message.timeMachine.bestDayToBuy.date)
-                    val buyPrice = message.timeMachine.bestDayToBuy.price?.toInt().toString()
-                    val sellDate = convertMillisToDate(message.timeMachine.bestDayToSell.date!!)
-                    val sellPrice = message.timeMachine.bestDayToSell.price?.toInt().toString()
-                    binding.buyDateTv.text = buyDate
-                    binding.buyPriceTv.text = getString(R.string.buysell_price, buyPrice)
-                    binding.sellDateTv.text = sellDate
-                    binding.sellPriceTv.text = getString(R.string.buysell_price, sellPrice)
-                } else {
-                    binding.hasBestDatesCl.visibility = View.GONE
-                    binding.hasNoBestDatesCl.visibility = View.VISIBLE
-                    binding.bestDatesIv.visibility = View.GONE
-                    binding.bestDatesNotAvailableIv.visibility = View.VISIBLE
-                }
             } else {
                 Toast.makeText(requireContext(), response.code(), Toast.LENGTH_SHORT).show()
             }
@@ -142,13 +79,103 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         cryptoConditionViewModel.requestFail.observe(viewLifecycleOwner, { errorValue ->
             if (errorValue) {
-                setErrorInFetchAlertDialog()
+                displayErrorInFetchAlertDialog()
             }
         })
 
     }
 
-    private fun setErrorInFetchAlertDialog() {
+    private fun setTimeMachine(message: CryptoCondition) {
+        if (message.timeMachine.bestDayToBuy.date != null) {
+            binding.hasBestDatesCl.visibility = View.VISIBLE
+            binding.hasNoBestDatesCl.visibility = View.GONE
+            binding.bestDatesIv.visibility = View.VISIBLE
+            binding.bestDatesNotAvailableIv.visibility = View.GONE
+            val buyDate = convertMillisToDate(message.timeMachine.bestDayToBuy.date)
+            val buyPrice = message.timeMachine.bestDayToBuy.price?.toInt().toString()
+            val sellDate = convertMillisToDate(message.timeMachine.bestDayToSell.date!!)
+            val sellPrice = message.timeMachine.bestDayToSell.price?.toInt().toString()
+            binding.buyDateTv.text = buyDate
+            binding.buyPriceTv.text = getString(R.string.buysell_price, buyPrice)
+            binding.sellDateTv.text = sellDate
+            binding.sellPriceTv.text = getString(R.string.buysell_price, sellPrice)
+        } else {
+            binding.hasBestDatesCl.visibility = View.GONE
+            binding.hasNoBestDatesCl.visibility = View.VISIBLE
+            binding.bestDatesIv.visibility = View.GONE
+            binding.bestDatesNotAvailableIv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setBearishTrend(message: CryptoCondition) {
+        val bearishTrendLength = message.bearishTrend.length.toString()
+        val bearishTrendStart = convertMillisToDate(message.bearishTrend.startDate)
+        val bearishTrendEnd = convertMillisToDate(message.bearishTrend.endDate)
+        binding.bearishTrendLengthTv.text = bearishTrendLength
+        binding.bearishTrendDaysText.visibility = View.VISIBLE
+        binding.bearishTrendTextTv.visibility = View.GONE
+
+        when {
+            bearishTrendStart != bearishTrendEnd -> {
+                binding.bearishTrendDate.text = getString(
+                    R.string.bearish_trend_dates_string,
+                    bearishTrendStart,
+                    bearishTrendEnd
+                )
+            }
+            bearishTrendStart == bearishTrendEnd && message.bearishTrend.length > 0 -> {
+                binding.bearishTrendDate.text = "The trend was bearish on $bearishTrendStart"
+            }
+            else -> {
+                binding.bearishTrendDate.text = getString(R.string.no_bearish_trend_detected)
+            }
+        }
+
+
+    }
+
+    private fun setTradingVolume(message: CryptoCondition) {
+        val tradingVolumeBillions: BigDecimal =
+            BigDecimal(message.highestVolume.volume / 1_000_000_000).setScale(
+                3,
+                RoundingMode.HALF_EVEN
+            )
+        val tradingVolumeMillions: BigDecimal =
+            BigDecimal(message.highestVolume.volume / 1_000_000).setScale(
+                3, RoundingMode.HALF_EVEN
+            )
+
+        val tradingVolumeDate = convertMillisToDate(message.highestVolume.date)
+        binding.redBoxPlaceholderTv.visibility = View.GONE
+        binding.sellTv.visibility = View.VISIBLE
+        binding.buyTv.visibility = View.VISIBLE
+
+        when {
+            message.highestVolume.volume == 0.0 -> {
+                binding.tradingVolumeVolume.text = getString(R.string.volume_not_available)
+                binding.tradingVolumeDate.text = ""
+            }
+            message.highestVolume.volume > 1_000_000_000 -> {
+                binding.tradingVolumeVolume.text =
+                    getString(
+                        R.string.trading_volume_volume_string,
+                        tradingVolumeBillions.toString()
+                    )
+                binding.tradingVolumeDate.text =
+                    getString(R.string.trading_volume_date_string, tradingVolumeDate)
+            }
+            else -> {
+                binding.tradingVolumeVolume.text = getString(
+                    R.string.trading_volume_millions_volume_string,
+                    tradingVolumeMillions.toString()
+                )
+                binding.tradingVolumeDate.text =
+                    getString(R.string.trading_volume_date_string, tradingVolumeDate)
+            }
+        }
+    }
+
+    private fun displayErrorInFetchAlertDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Server down")
         builder.setMessage("The server is probably sleeping at the moment, request has been sent to wake it up so please try again in ~3 minutes!😀")

@@ -25,4 +25,5 @@
     <string name="Date_picker_alert">Check dates startdate can\'t be larger than enddate!</string>
     <string name="check_dates">Check dates!</string>
     <string name="volume_not_available">Volume not available</string>
+    <string name="no_bearish_trend_detected">No bearish trend detected</string>
 </resources>

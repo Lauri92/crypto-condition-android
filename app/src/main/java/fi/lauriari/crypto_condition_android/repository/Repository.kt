@@ -11,7 +11,6 @@ class Repository {
         startdate: Long,
         enddate: Long
     ): Response<CryptoCondition> {
-        Log.d("cryptocondition", "in repo")
         return RetrofitInstance.api.getCryptoCondition(startdate, enddate)
     }
 }
