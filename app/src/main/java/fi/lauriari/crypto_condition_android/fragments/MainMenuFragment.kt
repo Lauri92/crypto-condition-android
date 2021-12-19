@@ -91,10 +91,12 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             binding.hasNoBestDatesCl.visibility = View.GONE
             binding.bestDatesIv.visibility = View.VISIBLE
             binding.bestDatesNotAvailableIv.visibility = View.GONE
+
             val buyDate = convertMillisToDate(message.timeMachine.bestDayToBuy.date)
             val buyPrice = message.timeMachine.bestDayToBuy.price?.toInt().toString()
             val sellDate = convertMillisToDate(message.timeMachine.bestDayToSell.date!!)
             val sellPrice = message.timeMachine.bestDayToSell.price?.toInt().toString()
+
             binding.buyDateTv.text = buyDate
             binding.buyPriceTv.text = getString(R.string.buysell_price, buyPrice)
             binding.sellDateTv.text = sellDate
@@ -239,9 +241,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 }
             } else {
                 Toast.makeText(
-                    requireContext(),
-                    getString(R.string.check_dates),
-                    Toast.LENGTH_SHORT
+                    requireContext(), getString(R.string.check_dates), Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -262,10 +262,7 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         if (setStartdate) {
             binding.selectStartDateTv.text = getString(
-                R.string.set_tv_text,
-                dayOfMonth.toString(),
-                (month + 1).toString(),
-                year.toString()
+                R.string.set_tv_text, dayOfMonth.toString(), (month + 1).toString(), year.toString()
             )
             val calendarTime = formatter.parse("$dayOfMonth ${month + 1} $year")
             startDateSeconds = calendarTime?.time!! / 1000
