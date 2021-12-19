@@ -14,13 +14,17 @@ class CryptoConditionViewModel : ViewModel() {
     private val cryptoConditionRepository = Repository()
 
     var cryptoConditionInfo: MutableLiveData<Response<CryptoCondition>> = MutableLiveData()
-    var requestFail: MutableLiveData<String> = MutableLiveData()
+    var requestFail: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getCryptoCondition(startdate: Long, enddate: Long) {
-        Log.d("cryptocondition", "in viewmodel")
         viewModelScope.launch {
-            val info = cryptoConditionRepository.getCryptoCondition(startdate, enddate)
-            cryptoConditionInfo.value = info
+            try {
+                val info = cryptoConditionRepository.getCryptoCondition(startdate, enddate)
+                cryptoConditionInfo.value = info
+            } catch (e: Exception) {
+                requestFail.value = true
+                Log.d("exception", e.toString())
+            }
         }
     }
 

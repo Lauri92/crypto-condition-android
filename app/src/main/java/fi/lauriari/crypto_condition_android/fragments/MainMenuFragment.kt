@@ -1,5 +1,6 @@
 package fi.lauriari.crypto_condition_android.fragments
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -138,6 +139,27 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 Toast.makeText(requireContext(), response.code(), Toast.LENGTH_SHORT).show()
             }
         })
+
+        cryptoConditionViewModel.requestFail.observe(viewLifecycleOwner, { errorValue ->
+            if (errorValue) {
+                setErrorInFetchAlertDialog()
+            }
+        })
+
+    }
+
+    private fun setErrorInFetchAlertDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Server down")
+        builder.setMessage("The server is probably sleeping at the moment, request has been sent to wake it up so please try again in ~3 minutes!😀")
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setPositiveButton("Ok") { _, _ ->
+            cryptoConditionViewModel.requestFail.value = false
+        }
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun initClickListeners() {
