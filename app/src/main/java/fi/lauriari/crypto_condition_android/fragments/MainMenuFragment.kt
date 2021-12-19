@@ -124,7 +124,8 @@ class MainMenuFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 )
             }
             bearishTrendStart == bearishTrendEnd && message.bearishTrend.length > 0 -> {
-                binding.bearishTrendDate.text = "The trend was bearish on $bearishTrendStart"
+                binding.bearishTrendDate.text =
+                    getString(R.string.bearish_trend_date, bearishTrendStart)
             }
             else -> {
                 binding.bearishTrendDate.text = getString(R.string.no_bearish_trend_detected)

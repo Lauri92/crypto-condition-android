@@ -17,6 +17,7 @@
     <string name="bearish_trend">Bearish trend</string>
     <string name="days">DAYS</string>
     <string name="bearish_trend_dates_string">The trend was bearish %s - %s</string>
+    <string name="bearish_trend_date">The trend was bearish on %s</string>
     <string name="buysell_price">%s €/₿</string>
     <string name="sell">SELL</string>
     <string name="best_buy_and_sell_dates_will_appear_here">Best dates to sell or buy</string>
